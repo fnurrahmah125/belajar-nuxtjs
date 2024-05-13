@@ -8,6 +8,7 @@ export const products = [
     isCart: false,
     description:
       "This shirt features a vibrant and eye-catching color and a solid pattern that will give you a happy feeling. Its long sleeve design makes it an ideal choice for men. The turn-down collar adds to comfort and stylish look. Its versatile design and great fit make it an ideal choice for casual occasions. Specifications Style: Casual Sleeve Style: Regular Sleeve Length(cm): Full Shirts Type: Casual Shirts Pattern Type: Solid Origin: CN(Origin) Model Number: C6112 Material: Cotton Item T",
+    count: 1,
   },
   {
     id: 2,
@@ -18,6 +19,7 @@ export const products = [
     isCart: false,
     description:
       "Regular fit Denim design Classic collar Long buttoned sleeve Patch pocket on the chest Button up The model is 187 cm tall and is wearing a size M",
+    count: 1,
   },
   {
     id: 3,
@@ -28,6 +30,7 @@ export const products = [
     isCart: false,
     description:
       "Navy Blue Preppy Long Sleeve Polyester Plaid Shirt Non-Stretch Spring/Fall Men Tops",
+    count: 1,
   },
   {
     id: 4,
@@ -38,6 +41,7 @@ export const products = [
     isCart: false,
     description:
       "Rugged, functional, and to the point. The Operator Utility Shirt has a military look with a metropolitan fit and finish. The durable stone gray cotton shirt weight canvas is sure to be a favorite back to well-worn denim.",
+    count: 1,
   },
   {
     id: 5,
@@ -48,5 +52,6 @@ export const products = [
     isCart: false,
     description:
       "White Casual Short Sleeve Cotton Plain Top Embellished Non-Stretch Summer Men Tops",
+    count: 1,
   },
 ];

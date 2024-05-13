@@ -11,21 +11,25 @@ const props = defineProps({
     </div>
     <div class="w-full">
       <h5 class="text-xl font-semibold mb-2">{{ props.product.name }}</h5>
-      <p class="text-lg font-light mb-3">${{ props.product.price }}</p>
+      <p class="text-lg font-light mb-3">
+        ${{ props.product.price * props.product.count }}
+      </p>
       <div class="flex items-center justify-between">
         <div
           class="flex items-center border border-gray-300 w-max rounded- full"
         >
           <button
             class="cursor-pointer py-1 pl-4 pr-2 text-lg flex items- center justify-center"
+            @click="$emit('decrement', props.product.id)"
           >
             -
           </button>
           <div class="py-1 px-2 text-lg flex items-center justify- center">
-            1
+            {{ props.product.count }}
           </div>
           <button
             class="cursor-pointer py-1 pl-2 pr-4 text-lg flex items- center justify-center"
+            @click="$emit('increment', props.product.id)"
           >
             +
           </button>

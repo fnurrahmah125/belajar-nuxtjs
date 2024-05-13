@@ -8,7 +8,7 @@ const props = defineProps({
 const oneProduct = ref(props.product);
 
 const addCart = () => {
-  oneProduct.value.isCart = !oneProduct.value.isCart;
+  oneProduct.value.isCart = true;
   let localStorageData = localStorage.getItem("products");
   let productOfCart: Products[] = [];
 
@@ -17,14 +17,29 @@ const addCart = () => {
   }
 
   if (oneProduct.value.isCart) {
-    productOfCart.push(oneProduct.value);
-    localStorage.setItem("products", JSON.stringify(productOfCart));
+    // find index for selected product
+    const foundIndex = productOfCart.findIndex(
+      (product) => product.id === oneProduct.value.id
+    );
+
+    if (foundIndex !== -1) {
+      // update count value if the product is already in localStorage
+      const foundProduct = productOfCart[foundIndex];
+      if (foundProduct) {
+        foundProduct.count = (foundProduct.count || 0) + 1;
+        productOfCart[foundIndex] = foundProduct;
+      }
+    } else {
+      // add new product if it's not in localStorage
+      productOfCart.push(oneProduct.value);
+    }
   } else {
     productOfCart = productOfCart.filter(
       (item) => item.id !== oneProduct.value.id
     );
-    localStorage.setItem("products", JSON.stringify(productOfCart));
   }
+
+  localStorage.setItem("products", JSON.stringify(productOfCart));
 };
 </script>
 

@@ -1,3 +1,67 @@
+<script lang="ts" setup>
+import type { Products } from "~/types/products";
+
+const products = ref<Products[]>([]);
+const totalPrice = computed(() => {
+  return products.value
+    .filter(
+      (product) => product.price !== undefined && product.price !== undefined
+    )
+    .reduce(
+      (accumulator, currentValue) =>
+        accumulator + currentValue.price! * currentValue.count!,
+      0
+    );
+});
+
+onMounted(() => {
+  let localStorageData = localStorage.getItem("products");
+  if (localStorageData) {
+    products.value = JSON.parse(localStorageData);
+  }
+});
+
+const removeCart = (id: number) => {
+  products.value = products.value.filter((item) => item.id !== id);
+  localStorage.setItem("products", JSON.stringify(products.value));
+};
+
+const increment = (id: number) => {
+  // find index for selected product
+  const foundIndex = products.value.findIndex((product) => product.id === id);
+
+  if (foundIndex !== -1) {
+    // update count value if the product is already in localStorage
+    const foundProduct = products.value[foundIndex];
+    if (foundProduct) {
+      foundProduct.count = (foundProduct.count || 0) + 1;
+      products.value[foundIndex] = foundProduct;
+    }
+  }
+
+  localStorage.setItem("products", JSON.stringify(products.value));
+};
+
+const decrement = (id: number) => {
+  // find index for selected product
+  const foundIndex = products.value.findIndex((product) => product.id === id);
+  if (foundIndex !== -1) {
+    const foundProduct = products.value[foundIndex];
+
+    if (foundProduct.count > 1) {
+      // run decrement if the count value is greater than 1
+      foundProduct.count = (foundProduct.count || 0) - 1;
+      products.value[foundIndex] = foundProduct;
+      localStorage.setItem("products", JSON.stringify(products.value));
+    } else {
+      // remove cart card if the count value is 0
+      products.value = products.value.filter((item) => item.id !== id);
+      localStorage.setItem("products", JSON.stringify(products.value));
+    }
+  }
+};
+</script>
+
 <template>
   <section>
     <div class="container">
@@ -11,7 +75,12 @@
           </div>
           <div v-if="products.length > 0" class="flex flex-col gap-6">
             <template v-for="(item, index) in products" :key="index">
-              <CardsCardCart :product="item" @removeCart="removeCart" />
+              <CardsCardCart
+                :product="item"
+                @removeCart="removeCart"
+                @increment="increment"
+                @decrement="decrement"
+              />
             </template>
           </div>
           <div v-else>
@@ -28,7 +97,11 @@
                 class="flex gap-4 items-center"
               >
                 <span class="text-limit limit-1 text-sm">{{ item.name }}</span>
-                <span class="text-sm font-semibold">${{ item.price }}</span>
+                <span
+                  v-if="item.price !== undefined && item.count !== undefined"
+                  class="text-sm font-semibold"
+                  >${{ item.price * item.count }}</span
+                >
               </div>
             </div>
             <div v-else>
@@ -51,28 +124,3 @@
     </div>
   </section>
 </template>
-
-<script lang="ts" setup>
-import type { Products } from "~/types/products";
-const products = ref<Products[]>([]);
-const totalPrice = computed(() => {
-  return products.value
-    .filter((product) => product.price !== undefined)
-    .reduce(
-      (accumulator, currentValue) => accumulator + currentValue.price!,
-      0
-    );
-});
-
-onMounted(() => {
-  let localStorageData = localStorage.getItem("products");
-  if (localStorageData) {
-    products.value = JSON.parse(localStorageData);
-  }
-});
-
-const removeCart = (id: number) => {
-  products.value = products.value.filter((item) => item.id !== id);
-  localStorage.setItem("products", JSON.stringify(products.value));
-};
-</script>
